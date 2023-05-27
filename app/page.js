@@ -7,6 +7,7 @@ export default function Home() {
 
   const handleChatSubmit = async (e) => {
     e.preventDefault();
+    setStreamedData("");
 
     const formData = new FormData(e.currentTarget);
 
