@@ -1,7 +1,7 @@
 import { ChatOpenAI } from "langchain/chat_models/openai";
 import { HumanChatMessage } from "langchain/schema";
 
-const runLLMChain = async (prompt) => {
+const runLLMChain = async (prompt, key) => {
   const encoder = new TextEncoder();
 
   const stream = new TransformStream();
@@ -9,6 +9,7 @@ const runLLMChain = async (prompt) => {
 
   const model = new ChatOpenAI({
     streaming: true,
+    openAIApiKey: key,
     callbacks: [
       {
         async handleLLMNewToken(token) {
@@ -29,8 +30,8 @@ const runLLMChain = async (prompt) => {
 };
 
 export async function POST(req) {
-  const { prompt } = await req.json();
+  const { prompt, key } = await req.json();
 
-  const stream = runLLMChain(prompt);
+  const stream = runLLMChain(prompt, key);
   return new Response(await stream);
 }
